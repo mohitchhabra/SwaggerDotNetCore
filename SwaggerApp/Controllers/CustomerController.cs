@@ -11,10 +11,15 @@ namespace SwaggerApp.Controllers
     [ApiController]
     public class PeopleController : ControllerBase
     {
-        public static List<Person> People = new List<Person>();
+        public static List<Person> People = new List<Person>()
+        {
+            new Person { Id = 0, Name = "Ivo Vutov" },
+            new Person { Id = 1, Name = "Mohit Chhabra"},
+        };
 
         public PeopleController()
-        {
+        { 
+            
         }
 
         [HttpGet]
@@ -26,7 +31,14 @@ namespace SwaggerApp.Controllers
         [HttpGet("{id}")]
         public ActionResult<Person> Get(int id)
         {
-            return People.FirstOrDefault(x => x.Id == id);
+            var person = People.Where(p => p.Id == id);
+            if (person != null)
+            {
+                return Ok(person);
+            } else
+            {
+                return NotFound();
+            }
         }
 
         [HttpPost]
